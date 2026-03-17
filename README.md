@@ -1,1 +1,9 @@
-# ExamProject---AirBnB-prices-based-on-location-in-New-York
+# ExamProject
+
+### AirBnB prices based on location in New York
+
+### Problemformulering
+
+### Hypotese
+
+### Research goals
