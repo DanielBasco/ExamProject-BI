@@ -332,18 +332,18 @@ with tab2:
 with tab3:
     st.markdown("## Cluster Explorer")
     st.markdown("**KMeans (k=4)** segments listings by distance, price, room type, reviews, minimum nights, and availability.")
-
+ 
     # Cluster summary table
     numeric_cols_summary = ["dist_to_cent_km", "minimum_nights", "number_of_reviews",
                             "availability_365", "num_room_type", "price"]
     cluster_summary = df_clustered.groupby("cluster")[numeric_cols_summary].mean().round(1)
     cluster_summary.index = [f"Cluster {i}" for i in cluster_summary.index]
     cluster_summary.columns = ["Dist. (km)", "Min. nights", "# Reviews", "Availability", "Room type", "Avg. price"]
-
+ 
     st.dataframe(cluster_summary.style.background_gradient(cmap="YlOrRd", axis=0), use_container_width=True)
-
+ 
     col_c1, col_c2 = st.columns(2)
-
+ 
     with col_c1:
         fig4, ax4 = plt.subplots(figsize=(6, 4.5))
         fig4.patch.set_facecolor("#f7f4ef")
@@ -360,9 +360,8 @@ with tab3:
         ax4.spines[["top", "right"]].set_visible(False)
         st.pyplot(fig4)
         plt.close()
-
+ 
     with col_c2:
-        # Cluster size bar chart
         cluster_counts = df_clustered["cluster"].value_counts().sort_index()
         fig5, ax5 = plt.subplots(figsize=(6, 4.5))
         fig5.patch.set_facecolor("#f7f4ef")
@@ -374,37 +373,38 @@ with tab3:
         ax5.spines[["top", "right"]].set_visible(False)
         st.pyplot(fig5)
         plt.close()
-        
-st.markdown("---")
-st.markdown("### Geographic cluster map")
-
-import folium
-from streamlit_folium import st_folium
-from folium.plugins import MarkerCluster
-
-location = [40.758896, -73.985130]
-mapa = folium.Map(location=location, tiles="OpenStreetMap", zoom_start=10)
-
-colors = ["blue", "green", "red", "purple"]
-marker_cluster = MarkerCluster().add_to(mapa)
-
-sample_map = df_clustered.sample(500, random_state=42)  # 500 punkter så det loader hurtigt
-for _, row in sample_map.iterrows():
-    folium.CircleMarker(
-        location=[row["latitude"], row["longitude"]],
-        radius=3,
-        color=colors[int(row["cluster"])],
-        fill=True,
-        popup=f"Price: ${row['price']:.0f} | Cluster {int(row['cluster'])}"
-    ).add_to(marker_cluster)
-
-folium.Marker(
-    location=location,
-    popup="Times Square",
-    icon=folium.Icon(color="black")
-).add_to(mapa)
-
-st_folium(mapa, width=700, height=450)
+ 
+    st.markdown("---")
+    st.markdown("### Geographic cluster map")
+ 
+    import folium
+    from streamlit_folium import st_folium
+    from folium.plugins import MarkerCluster
+ 
+    location = [40.758896, -73.985130]
+    mapa = folium.Map(location=location, tiles="OpenStreetMap", zoom_start=10)
+ 
+    colors = ["blue", "green", "red", "purple"]
+    marker_cluster = MarkerCluster().add_to(mapa)
+ 
+    sample_map = df_clustered.sample(500, random_state=42)
+    for _, row in sample_map.iterrows():
+        folium.CircleMarker(
+            location=[row["latitude"], row["longitude"]],
+            radius=3,
+            color=colors[int(row["cluster"])],
+            fill=True,
+            popup=f"Price: ${row['price']:.0f} | Cluster {int(row['cluster'])}"
+        ).add_to(marker_cluster)
+ 
+    folium.Marker(
+        location=location,
+        popup="Times Square",
+        icon=folium.Icon(color="black")
+    ).add_to(mapa)
+ 
+    st_folium(mapa, width=700, height=450)
+ 
     # Predict cluster for new listing
     st.markdown("---")
     st.markdown("### Classify a new listing")
@@ -418,12 +418,12 @@ st_folium(mapa, width=700, height=450)
     with cc3:
         new_room = st.selectbox("Room type", ["Private room", "Entire home/apt", "Shared room"], key="cluster_room")
         new_price = st.number_input("Price (USD)", 0, 500, 100)
-
+ 
     new_listing = np.array([[new_dist_km, new_min_nights, new_reviews, new_avail,
                              room_map[new_room], new_price]])
     new_scaled = scaler.transform(new_listing)
     predicted_cluster = kmeans.predict(new_scaled)[0]
-
+ 
     st.markdown(f"""<div class="result-box">
         <div class="label">Predicted Cluster</div>
         <div class="value">Cluster {predicted_cluster}</div>
