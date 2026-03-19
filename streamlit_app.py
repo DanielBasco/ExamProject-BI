@@ -374,6 +374,7 @@ with tab3:
         ax5.spines[["top", "right"]].set_visible(False)
         st.pyplot(fig5)
         plt.close()
+        
 st.markdown("---")
 st.markdown("### Geographic cluster map")
 
