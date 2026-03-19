@@ -96,7 +96,7 @@ def train_models(df):
     # ── Polynomial Regression ────────────────────────────────────────────────
     X_poly_raw = df[["dist_to_cent_km"]].values
     y_poly = df["price"].values
-    poly_transformer = PolynomialFeatures(degree=2)
+    poly_transformer = PolynomialFeatures(degree=3)
     X_poly = poly_transformer.fit_transform(X_poly_raw)
     poly_reg = LinearRegression().fit(X_poly, y_poly)
 
