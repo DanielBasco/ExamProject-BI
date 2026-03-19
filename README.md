@@ -14,6 +14,10 @@ The goal of this analysis is to examine whether the distance from the city cente
 
 Does the distance from the city center affect the price of Airbnb listings?
 
+Does room type influence the price of an Airbnb listing, independently of its distance to the city center?
+
+Can machine learning models classify Airbnb into price segments based on the numeric attributes?
+
 ### Hypotheses
 
 * H₀ (Null Hypothesis):*
