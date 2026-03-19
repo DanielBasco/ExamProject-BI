@@ -334,16 +334,10 @@ with tab3:
     st.markdown("**KMeans (k=4)** segments listings by distance, price, room type, reviews, minimum nights, and availability.")
 
     st.markdown("### Geographic cluster map")
-
-col_leg1, col_leg2, col_leg3, col_leg4 = st.columns(4)
-with col_leg1:
-    st.markdown("🔵 **Cluster 0**")
-with col_leg2:
-    st.markdown("🟢 **Cluster 1**")
-with col_leg3:
-    st.markdown("🔴 **Cluster 2**")
-with col_leg4:
-    st.markdown("🟣 **Cluster 3**")
+    st.markdown(
+        "🔵 Cluster 0 &nbsp;&nbsp;&nbsp; 🟢 Cluster 1 &nbsp;&nbsp;&nbsp; 🔴 Cluster 2 &nbsp;&nbsp;&nbsp; 🟣 Cluster 3",
+        unsafe_allow_html=True
+    )
  
     # Cluster summary table
     numeric_cols_summary = ["dist_to_cent_km", "minimum_nights", "number_of_reviews",
