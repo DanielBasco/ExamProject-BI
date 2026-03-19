@@ -374,7 +374,36 @@ with tab3:
         ax5.spines[["top", "right"]].set_visible(False)
         st.pyplot(fig5)
         plt.close()
+st.markdown("---")
+st.markdown("### Geographic cluster map")
 
+import folium
+from streamlit_folium import st_folium
+from folium.plugins import MarkerCluster
+
+location = [40.758896, -73.985130]
+mapa = folium.Map(location=location, tiles="OpenStreetMap", zoom_start=10)
+
+colors = ["blue", "green", "red", "purple"]
+marker_cluster = MarkerCluster().add_to(mapa)
+
+sample_map = df_clustered.sample(500, random_state=42)  # 500 punkter så det loader hurtigt
+for _, row in sample_map.iterrows():
+    folium.CircleMarker(
+        location=[row["latitude"], row["longitude"]],
+        radius=3,
+        color=colors[int(row["cluster"])],
+        fill=True,
+        popup=f"Price: ${row['price']:.0f} | Cluster {int(row['cluster'])}"
+    ).add_to(marker_cluster)
+
+folium.Marker(
+    location=location,
+    popup="Times Square",
+    icon=folium.Icon(color="black")
+).add_to(mapa)
+
+st_folium(mapa, width=700, height=450)
     # Predict cluster for new listing
     st.markdown("---")
     st.markdown("### Classify a new listing")
