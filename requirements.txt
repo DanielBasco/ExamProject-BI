@@ -6,3 +6,5 @@ matplotlib
 seaborn
 geopy
 yellowbrick
+streamlit-folium
+folium
